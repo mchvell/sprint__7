@@ -1,15 +1,13 @@
 import requests
 import allure
 
-from user_generator import generate_order_data
+from data.data_get_orders import DataGetOrders as data_orders
 
 
 class TestGetOrders:
-    path = "https://qa-scooter.praktikum-services.ru"
-    method = "/api/v1/orders"
 
     @allure.description("Вызываем метод /api/v1/orders и проверяем, что он содержит заказы")
     def test_get_orders(self):
-        response = requests.get(url=self.path+self.method)
+        response = requests.get(url=data_orders.url)
         assert "order", "createdAt" == response.json()
 
