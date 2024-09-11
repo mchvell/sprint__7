@@ -1,5 +1,7 @@
+from settings import BaseUrl as b
+
+
 class CreateOrder:
-    path = "https://qa-scooter.praktikum-services.ru"
     method = "/api/v1/orders"
-    url = path + method
+    url = b.base_url + method
     colours = ["BLACK", "GREY"]

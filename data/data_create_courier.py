@@ -1,7 +1,9 @@
+from settings import BaseUrl as b
+
+
 class CreateCourierData:
-    path = "https://qa-scooter.praktikum-services.ru"
     method = "/api/v1/courier"
-    url = path + method
+    url = b.base_url + method
 
     existing_user = {
         "login": "wukongTheMonkey",
