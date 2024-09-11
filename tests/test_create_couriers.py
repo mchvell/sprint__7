@@ -17,10 +17,7 @@ class TestCreatingCourier:
     def test_create_courier_with_existing_data(self):
         payload = courier_data.existing_user
         response = requests.post(url=courier_data.url, data=payload)
-        assert response.status_code != 201
-
-        # добавлена вторая проверка на контент боди
-        assert response.text == courier_data.same_login_error
+        assert response.status_code != 201 and response.text == courier_data.same_login_error
 
     @allure.description("Вызываем метод /api/v1/courier и проверяем, что нельзя создать курьера с пустым полем")
     def test_create_new_user_with_empty_field(self):
