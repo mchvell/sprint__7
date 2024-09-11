@@ -19,16 +19,19 @@ class TestCreatingCourier:
         response = requests.post(url=courier_data.url, data=payload)
         assert response.status_code != 201
 
+        # добавлена вторая проверка на контент боди
+        assert response.text == courier_data.same_login_error
+
     @allure.description("Вызываем метод /api/v1/courier и проверяем, что нельзя создать курьера с пустым полем")
     def test_create_new_user_with_empty_field(self):
         payload = {
-            "login": "wukongTheMonkey",
+            "login": "",
             "password": "banana123",
             "firstName": ""
 
         }
         response = requests.post(url=courier_data.url, data=payload)
-        assert response.status_code != 201
+        assert response.text == courier_data.not_enough_data_error
 
     @allure.description("Вызываем метод /api/v1/courier и проверяем, что ручка отдает валидный ответ")
     def test_create_new_courier_text_check(self):
@@ -36,18 +39,6 @@ class TestCreatingCourier:
         response = requests.post(url=courier_data.url, data=payload)
         text = {'ok': True}
         assert response.json() == text
-
-    @allure.description("Вызываем метод /api/v1/courier и проверяем, что нельзя создать курьера без одного из полей")
-    def test_create_new_user_without__field(self):
-        payload = {
-            "password": "banana123",
-            "firstName": "StoneMonkey"
-
-        }
-        response = requests.post(url=courier_data.url, data=payload)
-        error_text = courier_data.not_enough_data_error
-
-        assert response.text == error_text
 
     @allure.description("Вызываем метод /api/v1/courier и проверяем, что при повторе данных ручка отдает валидный ответ")
     def test_create_new_user_with_existing_data_return_error(self):

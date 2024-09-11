@@ -16,6 +16,10 @@ class TestCourierAuth:
         valid_status_code = 200
         assert response.status_code == valid_status_code
 
+        # добавлена вторая проверка на тело заказа
+        json_data = response.json()
+        assert "id" in json_data
+
     @allure.description("Вызываем метод /api/v1/courier/login и передаем в него пустое поле пароль")
     def test_auth_without_one_empty_field(self):
         user_data = create_new_user()
@@ -24,6 +28,9 @@ class TestCourierAuth:
         response = requests.post(url=auth_data.url, data=payload)
         error_status_code = 400
         assert response.status_code == error_status_code
+
+        # добавлена вторая проверка на контент боди ответа
+        assert response.text == auth_data.not_enough_data
 
     @allure.description("Вызываем метод /api/v1/courier/login и не передаем в него поле пароль")
     def test_auth_without_one_field(self):
@@ -42,11 +49,4 @@ class TestCourierAuth:
         response = requests.post(url=auth_data.url, data=payload)
         assert response.text == auth_data.profile_not_found_error
 
-    @allure.description("Вызываем метод /api/v1/courier/login и проверяем, что получаем в ответе id")
-    def test_auth_success_id(self):
-        user_data = create_new_user()
-        payload = {"login": user_data[0], "password": user_data[1]}
 
-        response = requests.post(url=auth_data.url, data=payload)
-        json_data = response.json()
-        assert "id" in json_data
